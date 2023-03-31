@@ -1,8 +1,11 @@
 var express = require('express');
 var app = express();
+const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.get('/', (req, res) => {
   res.send('Welcome to Corporate Foods');
 });
