@@ -1,5 +1,5 @@
-import {config} from 'dotenv';
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const SYS_ERR = {
   NODE_ENV_INVALID: 100,

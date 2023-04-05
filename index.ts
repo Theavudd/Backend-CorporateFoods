@@ -1,11 +1,10 @@
 import express from 'express';
-
-const bodyParser = require('body-parser');
+import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 const dbURL: any = process.env.MONGO_URI;
 mongoose.connect(dbURL);
-import {mongoDOA} from './src/services/databases/mongoDB';
-import {Config} from './src/commonFunctions';
+import {mongoDOA} from './src/services/databases/mongoDB.js';
+import {Config} from './src/commonFunctions/Environment.js';
 
 class Application {
   private app = express();
@@ -38,7 +37,7 @@ class Application {
     this.app.use(express.json());
     this.app.use(express.urlencoded({extended: false}));
     this.app.use(bodyParser.json());
-    this.app.get('/', this.isAuth, (req, res) => {
+    this.app.get('/', this.isAuth, (req: any, res: any) => {
       res.send('Welcome to Corporate Foods');
     });
     this.app.use(

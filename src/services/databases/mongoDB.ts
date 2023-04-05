@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import {Config, SYS_ERR} from '../../commonFunctions';
+import {Config, SYS_ERR} from '../../commonFunctions/index.js';
 
 class Mongo {
   /**
