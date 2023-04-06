@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Food distribution Backend system for Corporates based on node codebase",
   "main": "index.ts",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "startDev": "env-cmd -f /etc/secrets/.env ts-node --esm index.ts",

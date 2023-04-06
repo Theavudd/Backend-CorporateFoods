@@ -3,8 +3,8 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 const dbURL: any = process.env.MONGO_URI;
 mongoose.connect(dbURL);
-import {mongoDOA} from './src/services/databases/mongoDB.js';
-import {Config} from './src/commonFunctions/Environment.js';
+import {mongoDOA} from './src/services/databases/mongoDB';
+import {Config} from './src/commonFunctions/Environment';
 
 class Application {
   private app = express();
@@ -12,6 +12,7 @@ class Application {
   constructor() {
     this.app = express();
     this.init();
+    this.useMiddleware();
   }
 
   isAuth(req: any, res: any, next: any) {
@@ -25,10 +26,8 @@ class Application {
   }
 
   async init() {
-    console.log('config', Config);
     mongoDOA.connectDatabase(Config.MONGO_URI);
     this.app.listen(process.env.PORT, () => {
-      console.log('au', process.env.NODE_ENV);
       // console.log('Server started at port 3000');
     });
   }
