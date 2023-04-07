@@ -34,7 +34,9 @@ class UserClass extends BaseClass {
             },
           };
           console.log();
-          res.status(200).json({...resp});
+          res
+            .status(200)
+            .json({success: true, statusCode: 200, body: {...resp}});
         } else {
           res.status(400).json({
             successCode: 400,
