@@ -23,15 +23,11 @@ class UserClass extends BaseClass {
           });
           await user.save();
           const resp = {
-            successCode: 200,
-            status: 'success',
-            body: {
-              name,
-              email,
-              phoneNo,
-              employeeId,
-              accountType,
-            },
+            name,
+            email,
+            phoneNo,
+            employeeId,
+            accountType,
           };
           console.log();
           res
