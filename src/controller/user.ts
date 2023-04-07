@@ -35,15 +35,11 @@ class UserClass extends BaseClass {
             .json({success: true, statusCode: 200, body: {...resp}});
         } else {
           res.status(400).json({
-            successCode: 400,
-            status: 'failed',
             message: 'Employee Id Already Exists',
           });
         }
       } else {
         res.status(400).json({
-          successCode: 400,
-          status: 'failed',
           message: 'User Already Exists',
         });
       }
