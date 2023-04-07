@@ -55,7 +55,6 @@ class UserClass extends BaseClass {
       const resp = await UserData.findOne({emailId: email});
       // password = decrypt(password);
       // console.log('decryptedText', decrypt(resp.password));
-      console.log('res', {...resp});
       if (resp) {
         const token = await createSession(req, res);
         res.status(200).json({
