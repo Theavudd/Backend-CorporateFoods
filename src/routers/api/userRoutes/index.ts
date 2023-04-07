@@ -1,15 +1,16 @@
 import {Joi, Segments, celebrate} from 'celebrate';
 import VALIDATION from '../../../utils/commonFunctions/validation';
 import BaseRoute from '../../baseRoutes';
+import UserClass from '../../../controller/user';
 import {Router, Request, Response, NextFunction} from 'express';
-import Middleware from '../../../services/middleware';
-import {Jwt} from 'jsonwebtoken';
 
 class UserRoutes {
   // public authSession = new Middleware.authenticateToken;
+  public path: string;
   router = Router();
-  constructor() {
+  constructor(path: string) {
     this.initRoutes();
+    this.path = path;
   }
 
   get instance(): Router {
@@ -27,7 +28,7 @@ class UserRoutes {
         },
       }),
       (req: Request, res: Response, next: NextFunction) => {
-        res.status(200).json({...req.body});
+        UserClass.getUserDetails(req, res, next);
       },
     );
 
@@ -45,10 +46,10 @@ class UserRoutes {
         },
       }),
       (req: Request, res: Response, next: NextFunction) => {
-        res.status(200).json({...req.body});
+        UserClass.userSignUp(req, res, next);
       },
     );
   }
 }
 
-export default new UserRoutes();
+export default new UserRoutes('/api');

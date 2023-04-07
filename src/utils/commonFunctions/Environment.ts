@@ -13,6 +13,7 @@ const Config = {
   basicauth: <string>process.env.basicauth,
   MONGO_URI: <string>process.env.MONGO_URI,
   JWT_PASSWORD: 'qwertyuiop',
+  ENCRYPTIONKEY: 'hhgghhggyyjjuuiikklloopp87tgfs54',
 };
 
 export {Config, SYS_ERR};

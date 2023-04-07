@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   emailId: String,
   password: String,
   accountType: Number,
+  phoneNo: String,
 });
 
 export const UserData = model('User', UserSchema);

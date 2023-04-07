@@ -44,9 +44,7 @@ class Application {
       res.send('Welcome to Corporate Foods');
     });
 
-    this.app.use('/api', this.isAuth, userRoutes.instance);
-
-    // Validation error handling
+    this.app.use(userRoutes.path, this.isAuth, userRoutes.instance);
     this.app.use(errors());
   };
 }

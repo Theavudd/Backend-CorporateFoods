@@ -1,3 +1,4 @@
+import {isCelebrateError} from 'celebrate';
 import {NextFunction, Request, Response} from 'express';
 
 export const errorHandling = (
@@ -6,12 +7,8 @@ export const errorHandling = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log('IS ERR', err);
-  if (err.isJoi) {
-    const errorDetails = err.details
-      .map((item: any) => item.message)
-      .join(', ');
-    res.status(400).json({error: errorDetails});
+  if (isCelebrateError(err)) {
+    next();
   } else {
     console.error(err);
     res.status(500).json({message: 'Internal Server Error'});
