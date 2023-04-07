@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import {Config, SYS_ERR} from '../../commonFunctions/index';
+import {Config, SYS_ERR} from '../../utils/commonFunctions/index';
 
 class Mongo {
   /**

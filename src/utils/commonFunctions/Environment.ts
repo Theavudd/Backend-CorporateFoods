@@ -12,6 +12,7 @@ const Config = {
   PORT: <string>process.env.PORT,
   basicauth: <string>process.env.basicauth,
   MONGO_URI: <string>process.env.MONGO_URI,
+  JWT_PASSWORD: 'qwertyuiop',
 };
 
 export {Config, SYS_ERR};
