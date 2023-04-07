@@ -3,11 +3,12 @@ import VALIDATION from '../../../utils/commonFunctions/validation';
 import BaseRoute from '../../baseRoutes';
 import UserClass from '../../../controller/user';
 import {Router, Request, Response, NextFunction} from 'express';
+import {verifyToken} from '../../../services/middleware/session.middleware';
 
 class UserRoutes {
   // public authSession = new Middleware.authenticateToken;
   public path: string;
-  router = Router();
+  private router = Router();
   constructor(path: string) {
     this.initRoutes();
     this.path = path;
@@ -18,8 +19,7 @@ class UserRoutes {
   }
 
   initRoutes() {
-    this.router.post(
-      '/login',
+    this.router.route('/login').post(
       celebrate({
         headers: VALIDATION.authorizationHeaderObj,
         body: {
@@ -32,8 +32,7 @@ class UserRoutes {
       },
     );
 
-    this.router.post(
-      '/signup',
+    this.router.route('/signup').post(
       celebrate({
         headers: VALIDATION.authorizationHeaderObj,
         body: {

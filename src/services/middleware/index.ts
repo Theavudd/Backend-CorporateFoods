@@ -1,4 +1,4 @@
-import {authenticateToken} from './auth';
+import {authenticateToken} from './auth.middleware';
 
 const Middleware = {
   authenticateToken,
