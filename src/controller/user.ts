@@ -10,38 +10,42 @@ import {createSession} from '../services/middleware/session.middleware';
 class UserClass extends BaseClass {
   async userSignUp(req: Request, res: Response, next: NextFunction) {
     try {
-      let {name, email, password, phoneNo, employeeId, accountType} = req.body;
-      if (!(await UserData.findOne({emailId: email}))) {
-        if (!(await UserData.findOne({employeeId}))) {
-          let token = await createSession(req, res);
-          const user = new UserData({
-            fullName: name,
-            emailId: email,
-            password,
-            employeeId,
-            accountType,
-            phoneNo,
-          });
-          await user.save();
-          const resp = {
-            name,
-            email,
-            phoneNo,
-            employeeId,
-            accountType,
-            token,
-          };
-          res.status(200).json({
-            success: true,
-            statusCode: 200,
-            message: 'Signup Successful',
-            body: {...resp},
-          });
-        } else {
-          res.status(400).json({
-            message: 'Employee Id Already Exists',
-          });
-        }
+      let {
+        name,
+        email,
+        password,
+        phoneNo,
+        employeeId,
+        accountType,
+        companyName,
+      } = req.body;
+      if (!(await UserData.findOne({emailId: email, employeeId}))) {
+        let token = await createSession(req, res);
+        const user = new UserData({
+          fullName: name,
+          emailId: email,
+          password,
+          employeeId,
+          accountType,
+          phoneNo,
+          companyName,
+        });
+        await user.save();
+        const resp = {
+          name,
+          email,
+          phoneNo,
+          employeeId,
+          accountType,
+          companyName,
+          token,
+        };
+        res.status(200).json({
+          success: true,
+          statusCode: 200,
+          message: 'Signup Successful',
+          body: {...resp},
+        });
       } else {
         res.status(400).json({
           message: 'User Already Exists',
