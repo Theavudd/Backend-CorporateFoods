@@ -44,7 +44,7 @@ class UserClass extends BaseClass {
           success: true,
           statusCode: 200,
           message: 'Signup Successful',
-          body: {...resp},
+          data: {...resp},
         });
       } else {
         res.status(400).json({
@@ -68,7 +68,7 @@ class UserClass extends BaseClass {
           res.status(200).json({
             successCode: 200,
             status: 'success',
-            body: {body: resp, token, message: 'Login Successful'},
+            data: {data: resp, token, message: 'Login Successful'},
           });
         } else {
           res.status(400).json({
