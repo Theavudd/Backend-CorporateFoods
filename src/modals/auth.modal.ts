@@ -2,16 +2,13 @@ import {Schema, model} from 'mongoose';
 
 const UserSchema = new Schema(
   {
-    fullName: String,
+    userId: String,
+    name: String,
     companyName: String,
     employeeId: String,
-    emailId: String,
-    password: {
-      iv: String,
-      encryptedData: String,
-    },
+    email: String,
+    password: String,
     accountType: Number,
-    phoneNo: String,
     tokeniv: String,
   },
   {versionKey: false},

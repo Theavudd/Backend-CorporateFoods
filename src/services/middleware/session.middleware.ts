@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import {Config} from '../../utils/commonFunctions';
 const jwt = require('jsonwebtoken');
 
-export const createSession = async (
+export const createToken = async (
   req: Request,
   res: Response,
   userId = '',

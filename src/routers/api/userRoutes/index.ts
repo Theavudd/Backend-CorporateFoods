@@ -1,6 +1,5 @@
 import {celebrate} from 'celebrate';
 import VALIDATION from '../../../utils/commonFunctions/validation';
-import BaseRoute from '../../baseRoutes';
 import UserClass from '../../../controller/user';
 import {Router, Request, Response, NextFunction} from 'express';
 
@@ -38,7 +37,6 @@ class UserRoutes {
           name: VALIDATION.USER.NAME.trim().required(),
           email: VALIDATION.USER.EMAIL.required(),
           password: VALIDATION.USER.PASSWORD.required(),
-          phoneNo: VALIDATION.USER.PHONE.optional(),
           employeeId: VALIDATION.USER.EMPLOYEEID.required(),
           companyName: VALIDATION.USER.COMPANYNAME.required(),
           accountType: VALIDATION.USER.ACCOUNTTYPE.required(),

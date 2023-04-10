@@ -35,10 +35,7 @@ const hashEncryption = (data: string) => {
 };
 
 const hashcompare = (data: any, hash: any) => {
-  bcrypt.compare(data, hash, function (err, result) {
-    // result == true
-    console.log('result', result);
-  });
+  return bcrypt.compare(data, hash);
 };
 
 export default {

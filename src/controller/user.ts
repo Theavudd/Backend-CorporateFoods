@@ -1,35 +1,27 @@
-import {Request, Response, NextFunction} from 'express';
+import e, {Request, Response, NextFunction} from 'express';
 import BaseClass from './baseController';
 import {UserData} from '../modals/auth.modal';
 import Encryption from '../utils/commonFunctions/Encryption';
-import {createSession} from '../services/middleware/session.middleware';
+import {createToken} from '../services/middleware/session.middleware';
 import {updateTokeniv} from '../utils/commonFunctions/commonFunctions';
 import {v4 as uuidv4} from 'uuid';
 
 class UserClass extends BaseClass {
   async userSignUp(req: Request, res: Response, next: NextFunction) {
     try {
-      let {
-        name,
-        email,
-        password,
-        phoneNo,
-        employeeId,
-        accountType,
-        companyName,
-      } = req.body;
+      let {name, email, password, employeeId, accountType, companyName} =
+        req.body;
       if (!(await UserData.findOne({emailId: email, employeeId}))) {
         let hashPassword: any = await Encryption.HashEncryption(password);
         const userId = uuidv4();
-        let token = Encryption.Encrypt(await createSession(req, res, userId));
+        let token = Encryption.Encrypt(await createToken(req, res, userId));
         const user = new UserData({
           userId,
-          fullName: name,
-          emailId: email,
+          name,
+          email,
           password: hashPassword,
           employeeId,
           accountType,
-          phoneNo,
           companyName,
           tokeniv: token.iv,
         });
@@ -37,7 +29,6 @@ class UserClass extends BaseClass {
         const resp = {
           name,
           email,
-          phoneNo,
           employeeId,
           accountType,
           companyName,
@@ -63,17 +54,41 @@ class UserClass extends BaseClass {
   async getUserDetails(req: Request, res: Response, next: NextFunction) {
     try {
       let {email, password} = req.body;
-      const resp = await UserData.findOne({emailId: email});
-      let decryptPass = Encryption.HashCompare(resp?.password, password);
+      const resp = await UserData.findOne({email});
       if (resp) {
-        if (decryptPass === password) {
-          const token = Encryption.Encrypt(await createSession(req, res));
+        let decryptPass = await Encryption.HashCompare(
+          password,
+          resp?.password,
+        );
+        if (decryptPass) {
+          const token = Encryption.Encrypt(await createToken(req, res));
           updateTokeniv(UserData, resp?._id, token.iv);
+          const {
+            userId,
+            name,
+            email,
+            password,
+            employeeId,
+            accountType,
+            companyName,
+          } = resp;
+          // const responseData = {...resp};
+          // console.log('resp', resp);
+          const responseData = {
+            userId,
+            name,
+            email,
+            password,
+            employeeId,
+            accountType,
+            companyName,
+          };
+
           res.status(200).json({
             successCode: 200,
             status: 'success',
             data: {
-              data: resp,
+              data: responseData,
               token: token.encryptedData,
               message: 'Login Successful',
             },
@@ -93,7 +108,7 @@ class UserClass extends BaseClass {
         });
       }
     } catch (error) {
-      res.status(500).json({
+      res.status(400).json({
         successCode: 500,
         status: 'failed',
         message: `Something went wrong`,
