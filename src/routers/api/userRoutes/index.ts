@@ -41,6 +41,7 @@ class UserRoutes {
           password: VALIDATION.USER.PASSWORD.required(),
           phoneNo: VALIDATION.USER.PHONE.optional(),
           employeeId: VALIDATION.USER.EMPLOYEEID.required(),
+          companyName: VALIDATION.USER.COMPANYNAME.required(),
           accountType: VALIDATION.USER.ACCOUNTTYPE.required(),
         },
       }),

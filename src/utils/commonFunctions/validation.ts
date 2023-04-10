@@ -8,6 +8,7 @@ const VALIDATION = {
     PHONE: Joi.string().min(10).max(15),
     EMPLOYEEID: Joi.string().alphanum().min(3).max(10),
     ACCOUNTTYPE: Joi.number().valid(1, 2),
+    COMPANYNAME: Joi.string().min(2).max(50),
   },
 
   authorizationHeaderObj: Joi.object({

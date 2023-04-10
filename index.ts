@@ -24,8 +24,7 @@ class Application {
     if (auth === process.env.basicauth || process.env?.PORT === '8089') {
       next();
     } else {
-      res.status(401);
-      res.send('Access forbidden');
+      res.status(403).json({message: 'Access Forbidden'});
     }
   }
 
