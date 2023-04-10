@@ -12,8 +12,8 @@ const Config = {
   PORT: <string>process.env.PORT,
   basicauth: <string>process.env.basicauth,
   MONGO_URI: <string>process.env.MONGO_URI,
-  JWT_PASSWORD: 'qwertyuiop',
-  ENCRYPTIONKEY: 'hhgghhggyyjjuuiikklloopp87tgfs54',
+  ENCRYPTION_ALGORITHM: <string>process.env.ENCRYPTION_ALGORITHM,
+  ENCRYPTION_KEY: <string>process.env.ENCRYPTION_KEY,
 };
 
 export {Config, SYS_ERR};

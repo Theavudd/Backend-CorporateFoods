@@ -1,4 +1,4 @@
-import {Joi, Segments, celebrate} from 'celebrate';
+import {celebrate} from 'celebrate';
 import VALIDATION from '../../../utils/commonFunctions/validation';
 import BaseRoute from '../../baseRoutes';
 import UserClass from '../../../controller/user';

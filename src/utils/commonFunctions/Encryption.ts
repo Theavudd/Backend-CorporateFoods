@@ -1,29 +1,69 @@
 import crypto from 'crypto';
 import {Config} from '.';
 
-export function encrypt(text: string) {
+// const iv = crypto.randomBytes(16);
+
+// function encrypt(text: string) {
+//   console.log(
+//     'Encryptioniv',
+//     iv.toString('hex'),
+//     Config.ENCRYPTION_ALGORITHM,
+//     Config.ENCRYPTION_KEY,
+//   );
+//   const cipher = crypto.createCipheriv(
+//     Config.ENCRYPTION_ALGORITHM,
+//     Config.ENCRYPTION_KEY,
+//     iv,
+//   );
+//   let encrypted = cipher.update(text, 'utf-8', 'hex');
+//   encrypted += cipher.final('hex');
+//   return encrypted;
+// }
+
+function encrypt(text: any) {
   const iv = crypto.randomBytes(16);
-  let cipher = crypto.createCipheriv(
-    'aes-256-cbc',
-    Buffer.from(Config.ENCRYPTIONKEY),
+  const cipher = crypto.createCipheriv(
+    Config.ENCRYPTION_ALGORITHM,
+    Config.ENCRYPTION_KEY,
     iv,
   );
-  let encrypted = cipher.update(text);
-  encrypted = Buffer.concat([encrypted, cipher.final()]);
-  return {iv: iv.toString('hex'), encryptedData: encrypted.toString('hex')};
+  let encrypted = cipher.update(text, 'utf-8', 'hex');
+  encrypted += cipher.final('hex');
+  return {iv: iv.toString('hex'), encryptedData: encrypted};
 }
 
-// Decrypting text
-export function decrypt(text: {iv: string; encryptedData: string}) {
-  let iv = Buffer.from(text.iv, 'hex');
-  let encryptedText = Buffer.from(text.encryptedData, 'hex');
-  let decipher = crypto.createDecipheriv(
-    'aes-256-cbc',
-    Buffer.from(Config.ENCRYPTIONKEY),
+function decrypt(data: any) {
+  let {iv, encryptedData} = data;
+  iv = Buffer.from(iv, 'hex');
+  encryptedData = Buffer.from(encryptedData, 'hex');
+  const decipher = crypto.createDecipheriv(
+    Config.ENCRYPTION_ALGORITHM,
+    Config.ENCRYPTION_KEY,
     iv,
   );
-  let decrypted = decipher.update(encryptedText);
-  decrypted = Buffer.concat([decrypted, decipher.final()]);
-  console.log('decypher', decrypted);
-  return decrypted.toString();
+  let decrypted = decipher.update(encryptedData, 'hex', 'utf-8');
+  decrypted += decipher.final('utf-8');
+  return decrypted;
 }
+
+// function decrypt(text: any) {
+//   console.log(
+//     'Decryptioniv',
+//     iv.toString('hex'),
+//     Config.ENCRYPTION_ALGORITHM,
+//     Config.ENCRYPTION_KEY,
+//   );
+//   const decipher = crypto.createDecipheriv(
+//     Config.ENCRYPTION_ALGORITHM,
+//     Config.ENCRYPTION_KEY,
+//     iv,
+//   );
+//   let decrypted = decipher.update(text, 'hex', 'utf-8');
+//   decrypted += decipher.final('utf-8');
+//   return decrypted;
+// }
+
+export default {
+  Encrypt: encrypt,
+  Decrypt: decrypt,
+};

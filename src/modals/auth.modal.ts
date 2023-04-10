@@ -6,7 +6,10 @@ const UserSchema = new Schema(
     companyName: String,
     employeeId: String,
     emailId: String,
-    password: String,
+    password: {
+      iv: String,
+      encryptedData: String,
+    },
     accountType: Number,
     phoneNo: String,
   },
