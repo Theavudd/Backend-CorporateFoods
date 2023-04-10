@@ -12,6 +12,7 @@ const UserSchema = new Schema(
     },
     accountType: Number,
     phoneNo: String,
+    tokeniv: String,
   },
   {versionKey: false},
 );

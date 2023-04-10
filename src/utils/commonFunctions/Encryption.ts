@@ -27,7 +27,23 @@ function decrypt(data: any) {
   return decrypted;
 }
 
+import bcrypt from 'bcrypt';
+
+const hashEncryption = (data: string) => {
+  const saltRounds = 10;
+  return bcrypt.hash(data, saltRounds);
+};
+
+const hashcompare = (data: any, hash: any) => {
+  bcrypt.compare(data, hash, function (err, result) {
+    // result == true
+    console.log('result', result);
+  });
+};
+
 export default {
+  HashEncryption: hashEncryption,
   Encrypt: encrypt,
+  HashCompare: hashcompare,
   Decrypt: decrypt,
 };

@@ -3,7 +3,6 @@ import VALIDATION from '../../../utils/commonFunctions/validation';
 import BaseRoute from '../../baseRoutes';
 import UserClass from '../../../controller/user';
 import {Router, Request, Response, NextFunction} from 'express';
-import {verifyToken} from '../../../services/middleware/session.middleware';
 
 class UserRoutes {
   // public authSession = new Middleware.authenticateToken;

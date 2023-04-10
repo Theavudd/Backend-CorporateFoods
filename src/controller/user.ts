@@ -3,6 +3,8 @@ import BaseClass from './baseController';
 import {UserData} from '../modals/auth.modal';
 import Encryption from '../utils/commonFunctions/Encryption';
 import {createSession} from '../services/middleware/session.middleware';
+import {updateTokeniv} from '../utils/commonFunctions/commonFunctions';
+import {v4 as uuidv4} from 'uuid';
 
 class UserClass extends BaseClass {
   async userSignUp(req: Request, res: Response, next: NextFunction) {
@@ -17,16 +19,19 @@ class UserClass extends BaseClass {
         companyName,
       } = req.body;
       if (!(await UserData.findOne({emailId: email, employeeId}))) {
-        let encryptedPass = Encryption.Encrypt(password);
-        let token = await createSession(req, res);
+        let hashPassword: any = await Encryption.HashEncryption(password);
+        const userId = uuidv4();
+        let token = Encryption.Encrypt(await createSession(req, res, userId));
         const user = new UserData({
+          userId,
           fullName: name,
           emailId: email,
-          password: encryptedPass,
+          password: hashPassword,
           employeeId,
           accountType,
           phoneNo,
           companyName,
+          tokeniv: token.iv,
         });
         await user.save();
         const resp = {
@@ -36,7 +41,8 @@ class UserClass extends BaseClass {
           employeeId,
           accountType,
           companyName,
-          token,
+          userId,
+          token: token.encryptedData,
         };
         res.status(200).json({
           success: true,
@@ -58,14 +64,19 @@ class UserClass extends BaseClass {
     try {
       let {email, password} = req.body;
       const resp = await UserData.findOne({emailId: email});
-      let decryptPass = Encryption.Decrypt(resp?.password);
+      let decryptPass = Encryption.HashCompare(resp?.password, password);
       if (resp) {
         if (decryptPass === password) {
-          const token = await createSession(req, res);
+          const token = Encryption.Encrypt(await createSession(req, res));
+          updateTokeniv(UserData, resp?._id, token.iv);
           res.status(200).json({
             successCode: 200,
             status: 'success',
-            data: {data: resp, token, message: 'Login Successful'},
+            data: {
+              data: resp,
+              token: token.encryptedData,
+              message: 'Login Successful',
+            },
           });
         } else {
           res.status(400).json({

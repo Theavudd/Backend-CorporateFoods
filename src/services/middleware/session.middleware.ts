@@ -5,13 +5,22 @@ const jwt = require('jsonwebtoken');
 export const createSession = async (
   req: Request,
   res: Response,
+  userId = '',
 ): Promise<void> => {
   try {
-    const {email, password} = req.body;
+    console.log('req.header', req.headers);
+    const {email, employeeId} = req.body;
+    if (!userId) {
+    }
+    let data = {
+      email,
+      employeeId,
+      userId,
+    };
     const token = jwt.sign(
-      {emailId: email, password},
+      {emailId: email, employeeId},
       Config.accessTokenSecret,
-      {expiresIn: '100m'},
+      {expiresIn: '100d'},
     );
     return token;
   } catch (error) {
@@ -19,9 +28,3 @@ export const createSession = async (
     res.status(401).json({message: 'Something went wrong'});
   }
 };
-
-export const verifyToken = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {};
