@@ -31,9 +31,12 @@ class UserClass extends BaseClass {
             accountType,
             token,
           };
-          res
-            .status(200)
-            .json({success: true, statusCode: 200, body: {...resp}});
+          res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: 'Signup Successful',
+            body: {...resp},
+          });
         } else {
           res.status(400).json({
             message: 'Employee Id Already Exists',
@@ -56,12 +59,20 @@ class UserClass extends BaseClass {
       // password = decrypt(password);
       // console.log('decryptedText', decrypt(resp.password));
       if (resp) {
-        const token = await createSession(req, res);
-        res.status(200).json({
-          successCode: 200,
-          status: 'success',
-          body: {body: resp, token},
-        });
+        if (resp.password === password) {
+          const token = await createSession(req, res);
+          res.status(200).json({
+            successCode: 200,
+            status: 'success',
+            body: {body: resp, token, message: 'Login Successful'},
+          });
+        } else {
+          res.status(400).json({
+            successCode: 400,
+            status: 'failed',
+            message: `Incorrect Password`,
+          });
+        }
       } else {
         res.status(400).json({
           successCode: 400,
