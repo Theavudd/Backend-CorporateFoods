@@ -52,4 +52,4 @@ class UserRoutes {
   }
 }
 
-export default new UserRoutes('/api');
+export default new UserRoutes('/api/users');
