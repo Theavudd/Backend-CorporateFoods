@@ -11,7 +11,9 @@ class UserClass extends BaseClass {
     try {
       let {name, email, password, employeeId, accountType, companyName} =
         req.body;
-      if (!(await UserData.findOne({emailId: email, employeeId}))) {
+      let dbResponse = await UserData.findOne({email, employeeId});
+      console.log('db', dbResponse);
+      if (!dbResponse) {
         let hashPassword: any = await Encryption.HashEncryption(password);
         const userId = uuidv4();
         let authToken = Encryption.Encrypt(await createToken(req, res, userId));
