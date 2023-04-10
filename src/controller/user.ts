@@ -14,7 +14,7 @@ class UserClass extends BaseClass {
       if (!(await UserData.findOne({emailId: email, employeeId}))) {
         let hashPassword: any = await Encryption.HashEncryption(password);
         const userId = uuidv4();
-        let token = Encryption.Encrypt(await createToken(req, res, userId));
+        let authToken = Encryption.Encrypt(await createToken(req, res, userId));
         const user = new UserData({
           userId,
           name,
@@ -23,7 +23,7 @@ class UserClass extends BaseClass {
           employeeId,
           accountType,
           companyName,
-          tokeniv: token.iv,
+          tokeniv: authToken.iv,
         });
         await user.save();
         const resp = {
@@ -33,7 +33,7 @@ class UserClass extends BaseClass {
           accountType,
           companyName,
           userId,
-          token: token.encryptedData,
+          authToken: authToken.encryptedData,
         };
         res.status(200).json({
           success: true,
@@ -61,8 +61,8 @@ class UserClass extends BaseClass {
           resp?.password,
         );
         if (decryptPass) {
-          const token = Encryption.Encrypt(await createToken(req, res));
-          updateTokeniv(UserData, resp?._id, token.iv);
+          const authToken = Encryption.Encrypt(await createToken(req, res));
+          updateTokeniv(UserData, resp?._id, authToken.iv);
           const {
             userId,
             name,
@@ -89,7 +89,7 @@ class UserClass extends BaseClass {
             status: 'success',
             data: {
               data: responseData,
-              token: token.encryptedData,
+              token: authToken.encryptedData,
               message: 'Login Successful',
             },
           });

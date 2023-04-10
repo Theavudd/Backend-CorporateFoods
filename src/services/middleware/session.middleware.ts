@@ -8,7 +8,6 @@ export const createToken = async (
   userId = '',
 ): Promise<void> => {
   try {
-    console.log('req.header', req.headers);
     const {email, employeeId} = req.body;
     if (!userId) {
     }
@@ -17,11 +16,7 @@ export const createToken = async (
       employeeId,
       userId,
     };
-    const token = jwt.sign(
-      {emailId: email, employeeId},
-      Config.accessTokenSecret,
-      {expiresIn: '100d'},
-    );
+    const token = jwt.sign(data, Config.accessTokenSecret, {expiresIn: '100d'});
     return token;
   } catch (error) {
     console.log('error', error);
