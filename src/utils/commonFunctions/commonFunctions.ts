@@ -13,3 +13,8 @@ export const updateTokeniv = async (
   };
   await UserData.findByIdAndUpdate(_id, updateTokeniv, options);
 };
+
+export const formatEmail = (email: string) => {
+  let newEmail = email.split('@');
+  return newEmail[0].toLowerCase() + '@' + newEmail[1].toLowerCase();
+};

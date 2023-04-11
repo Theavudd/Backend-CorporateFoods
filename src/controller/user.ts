@@ -1,13 +1,16 @@
-import e, {Request, Response, NextFunction} from 'express';
+import e, {Request, Response} from 'express';
 import BaseClass from './baseController';
 import {UserData} from '../modals/auth.modal';
 import Encryption from '../utils/commonFunctions/Encryption';
 import {createToken} from '../services/middleware/session.middleware';
-import {updateTokeniv} from '../utils/commonFunctions/commonFunctions';
+import {
+  formatEmail,
+  updateTokeniv,
+} from '../utils/commonFunctions/commonFunctions';
 import {v4 as uuidv4} from 'uuid';
 
 class UserClass extends BaseClass {
-  async userSignUp(req: Request, res: Response, next: NextFunction) {
+  async userSignUp(req: Request, res: Response) {
     try {
       let {name, email, password, employeeId, accountType, companyName} =
         req.body;
@@ -23,10 +26,11 @@ class UserClass extends BaseClass {
         let hashPassword: any = await Encryption.HashEncryption(password);
         const userId = uuidv4();
         let authToken = Encryption.Encrypt(await createToken(req, res, userId));
+        let newEmail = formatEmail(email);
         const user = new UserData({
           userId,
           name,
-          email,
+          email: newEmail,
           password: hashPassword,
           employeeId,
           accountType,
@@ -36,7 +40,7 @@ class UserClass extends BaseClass {
         await user.save();
         const resp = {
           name,
-          email,
+          email: newEmail,
           employeeId,
           accountType,
           companyName,
@@ -59,10 +63,11 @@ class UserClass extends BaseClass {
     }
   }
 
-  async getUserDetails(req: Request, res: Response, next: NextFunction) {
+  async userLogin(req: Request, res: Response) {
     try {
       let {email, password} = req.body;
-      const resp = await UserData.findOne({email});
+      let newEmail = formatEmail(email);
+      const resp = await UserData.findOne({email: newEmail});
       if (resp) {
         let decryptPass = await Encryption.HashCompare(
           password,

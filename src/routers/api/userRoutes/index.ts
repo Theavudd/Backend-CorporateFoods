@@ -1,7 +1,7 @@
 import {celebrate} from 'celebrate';
 import VALIDATION from '../../../utils/commonFunctions/validation';
 import UserClass from '../../../controller/user';
-import {Router, Request, Response, NextFunction} from 'express';
+import {Router} from 'express';
 
 class UserRoutes {
   // public authSession = new Middleware.authenticateToken;
@@ -25,9 +25,7 @@ class UserRoutes {
           password: VALIDATION.USER.PASSWORD.required(),
         },
       }),
-      (req: Request, res: Response, next: NextFunction) => {
-        UserClass.getUserDetails(req, res, next);
-      },
+      UserClass.userLogin,
     );
 
     this.router.route('/signup').post(
@@ -42,9 +40,7 @@ class UserRoutes {
           accountType: VALIDATION.USER.ACCOUNTTYPE.required(),
         },
       }),
-      (req: Request, res: Response, next: NextFunction) => {
-        UserClass.userSignUp(req, res, next);
-      },
+      UserClass.userSignUp,
     );
   }
 }
