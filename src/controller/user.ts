@@ -11,6 +11,13 @@ class UserClass extends BaseClass {
     try {
       let {name, email, password, employeeId, accountType, companyName} =
         req.body;
+      if (accountType === 1) {
+        if (!employeeId) {
+          res.status(400).json({
+            message: 'Employee Id Require',
+          });
+        }
+      }
       let dbResponse = await UserData.findOne({email, employeeId});
       if (!dbResponse) {
         let hashPassword: any = await Encryption.HashEncryption(password);
