@@ -11,7 +11,7 @@ class UserClass extends BaseClass {
     try {
       let {name, email, password, employeeId, accountType, companyName} =
         req.body;
-      if (accountType === 1) {
+      if (accountType == 1) {
         if (!employeeId) {
           res.status(400).json({
             message: 'Employee Id Required',
