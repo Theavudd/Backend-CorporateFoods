@@ -37,7 +37,7 @@ class UserRoutes {
           name: VALIDATION.USER.NAME.trim().required(),
           email: VALIDATION.USER.EMAIL.required(),
           password: VALIDATION.USER.PASSWORD.required(),
-          employeeId: VALIDATION.USER.EMPLOYEEID.optional(),
+          employeeId: VALIDATION.USER.EMPLOYEEID.trim().optional(),
           companyName: VALIDATION.USER.COMPANYNAME.required(),
           accountType: VALIDATION.USER.ACCOUNTTYPE.required(),
         },
