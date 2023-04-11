@@ -14,7 +14,7 @@ class UserClass extends BaseClass {
       if (accountType === 1) {
         if (!employeeId) {
           res.status(400).json({
-            message: 'Employee Id Require',
+            message: 'Employee Id Required',
           });
         }
       }
