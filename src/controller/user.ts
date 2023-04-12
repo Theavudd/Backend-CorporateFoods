@@ -47,16 +47,14 @@ class UserClass extends BaseClass {
           userId,
           authToken: authToken.encryptedData,
         };
+        res.statusMessage = 'Signup Successful';
         res.status(200).json({
           success: true,
           statusCode: 200,
-          message: 'Signup Successful',
           data: {...resp},
         });
       } else {
-        res.status(400).json({
-          message: 'User Already Exists',
-        });
+        res.status(400).statusMessage = 'User Already Exists';
       }
     } catch (error) {
       console.log('error', error);
@@ -85,8 +83,6 @@ class UserClass extends BaseClass {
             accountType,
             companyName,
           } = resp;
-          // const responseData = {...resp};
-          // console.log('resp', resp);
           const responseData = {
             userId,
             name,
@@ -96,35 +92,34 @@ class UserClass extends BaseClass {
             accountType,
             companyName,
           };
-
+          res.statusMessage = 'Login Successful';
           res.status(200).json({
             successCode: 200,
             status: 'success',
             data: {
               data: responseData,
               token: authToken.encryptedData,
-              message: 'Login Successful',
             },
           });
         } else {
+          res.statusMessage = `Incorrect Password`;
           res.status(400).json({
             successCode: 400,
             status: 'failed',
-            message: `Incorrect Password`,
           });
         }
       } else {
+        res.statusMessage = `User doesn't Exists`;
         res.status(400).json({
           successCode: 400,
           status: 'failed',
-          message: `User doesn't Exists`,
         });
       }
     } catch (error) {
+      res.statusMessage = `Something went wrong`;
       res.status(400).json({
         successCode: 500,
         status: 'failed',
-        message: `Something went wrong`,
       });
     }
   }
