@@ -99,7 +99,7 @@ class UserClass extends BaseClass {
             status: 'success',
             data: {
               data: responseData,
-              token: authToken.encryptedData,
+              authToken: authToken.encryptedData,
             },
           });
         } else {
