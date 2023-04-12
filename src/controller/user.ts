@@ -8,6 +8,7 @@ import {
   updateTokeniv,
 } from '../utils/commonFunctions/commonFunctions';
 import {v4 as uuidv4} from 'uuid';
+import {sendErrorResponse} from '../utils/commonFunctions/errorHandler';
 
 class UserClass extends BaseClass {
   async userSignUp(req: Request, res: Response) {
@@ -57,7 +58,7 @@ class UserClass extends BaseClass {
         res.status(400).statusMessage = 'User Already Exists';
       }
     } catch (error) {
-      console.log('error', error);
+      sendErrorResponse(error);
     }
   }
 
@@ -116,11 +117,12 @@ class UserClass extends BaseClass {
         });
       }
     } catch (error) {
-      res.statusMessage = `Something went wrong`;
-      res.status(400).json({
-        successCode: 500,
-        status: 'failed',
-      });
+      sendErrorResponse(error);
+      // res.statusMessage = `Something went wrong`;
+      // res.status(400).json({
+      //   successCode: 500,
+      //   status: 'failed',
+      // });
     }
   }
 }
