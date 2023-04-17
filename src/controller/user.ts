@@ -23,9 +23,10 @@ class UserClass extends BaseClass {
         }
       }
       let newEmail = formatEmail(email);
-      let dbResponse = UserData.findOne({
-        $or: [{email: newEmail}, {employeeId}],
+      let dbResponse = await UserData.findOne({
+        $or: [{email: newEmail}, {employeeId: employeeId}],
       });
+      console.log('db', dbResponse);
       if (!dbResponse) {
         let hashPassword: any = await Encryption.HashEncryption(password);
         const userId = uuidv4();
