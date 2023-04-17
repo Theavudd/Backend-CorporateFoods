@@ -1,3 +1,5 @@
+import validate from 'deep-email-validator';
+
 export const updateTokeniv = async (
   UserData: any,
   _id: any,
@@ -17,4 +19,8 @@ export const updateTokeniv = async (
 export const formatEmail = (email: string) => {
   let newEmail = email.split('@');
   return newEmail[0].toLowerCase() + '@' + newEmail[1].toLowerCase();
+};
+
+export const emailVerification = async (email: string) => {
+  return await validate(email);
 };

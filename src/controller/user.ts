@@ -4,6 +4,7 @@ import {UserData} from '../modals/auth.modal';
 import Encryption from '../utils/commonFunctions/Encryption';
 import {createToken} from '../services/middleware/session.middleware';
 import {
+  emailVerification,
   formatEmail,
   updateTokeniv,
 } from '../utils/commonFunctions/commonFunctions';
@@ -26,8 +27,14 @@ class UserClass extends BaseClass {
       let dbResponse = await UserData.findOne({
         $or: [{email: newEmail}, {employeeId: employeeId}],
       });
-      console.log('db', dbResponse);
       if (!dbResponse) {
+        const emailValid = await emailVerification(newEmail);
+        if (!emailValid.valid) {
+          res.status(400).json({
+            statusCode: 400,
+            message: 'Email is not valid',
+          });
+        }
         let hashPassword: any = await Encryption.HashEncryption(password);
         const userId = uuidv4();
         let authToken = Encryption.Encrypt(await createToken(req, res, userId));
@@ -54,6 +61,7 @@ class UserClass extends BaseClass {
           emailVerified: user.emailVerified,
           authToken: authToken.encryptedData,
         };
+
         res.status(200).json({
           statusCode: 200,
           message: 'Signedup Successfully',
@@ -62,7 +70,7 @@ class UserClass extends BaseClass {
       } else {
         res.status(400).json({
           statusCode: 400,
-          message: 'User Already Exists',
+          message: 'User Already Exists with the same Email or EmployeeId',
         });
       }
     } catch (error) {
