@@ -1,4 +1,4 @@
-import e, {Request, Response} from 'express';
+import e, {NextFunction, Request, Response} from 'express';
 import BaseClass from './baseController';
 import {UserData} from '../modals/auth.modal';
 import Encryption from '../utils/commonFunctions/Encryption';
@@ -22,12 +22,15 @@ class UserClass extends BaseClass {
           });
         }
       }
-      let dbResponse = await UserData.findOne({email, employeeId});
+      let newEmail = formatEmail(email);
+      let dbResponse = UserData.findOne({
+        $or: [{email: newEmail}, {employeeId}],
+      });
       if (!dbResponse) {
         let hashPassword: any = await Encryption.HashEncryption(password);
         const userId = uuidv4();
         let authToken = Encryption.Encrypt(await createToken(req, res, userId));
-        let newEmail = formatEmail(email);
+
         const user = new UserData({
           userId,
           name,
@@ -37,6 +40,7 @@ class UserClass extends BaseClass {
           accountType,
           companyName,
           tokeniv: authToken.iv,
+          emailVerified: false,
         });
         await user.save();
         const resp = {
@@ -46,6 +50,7 @@ class UserClass extends BaseClass {
           accountType,
           companyName,
           userId,
+          emailVerified: user.emailVerified,
           authToken: authToken.encryptedData,
         };
         res.status(200).json({
@@ -81,10 +86,10 @@ class UserClass extends BaseClass {
             userId,
             name,
             email,
-            password,
             employeeId,
             accountType,
             companyName,
+            emailVerified,
           } = resp;
           const responseData = {
             userId,
@@ -93,6 +98,7 @@ class UserClass extends BaseClass {
             employeeId,
             accountType,
             companyName,
+            emailVerified,
           };
           res.status(200).json({
             successCode: 200,
@@ -117,6 +123,12 @@ class UserClass extends BaseClass {
       sendErrorResponse(error);
     }
   }
+
+  // async verifyOtp(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     const {otp} = req.body;
+  //   } catch (error) {}
+  // }
 }
 
 export default new UserClass();

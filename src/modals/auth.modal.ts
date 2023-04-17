@@ -10,6 +10,7 @@ const UserSchema = new Schema(
     password: String,
     accountType: Number,
     tokeniv: String,
+    emailVerified: Boolean,
   },
   {versionKey: false},
 );

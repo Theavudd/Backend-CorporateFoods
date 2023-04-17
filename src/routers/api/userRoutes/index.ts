@@ -42,6 +42,16 @@ class UserRoutes {
       }),
       UserClass.userSignUp,
     );
+    // this.router.route('/verifyOtp').post(
+    //   celebrate({
+    //     headers: VALIDATION.authorizationHeaderObj,
+    //     body: {
+    //       email: VALIDATION.USER.EMAIL.required(),
+    //       password: VALIDATION.USER.PASSWORD.required(),
+    //     },
+    //   }),
+    //   UserClass.verifyOtp,
+    // );
   }
 }
 
